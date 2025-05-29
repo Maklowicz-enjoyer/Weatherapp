@@ -2,6 +2,7 @@
   "name": "weatherapp-frontend",
   "version": "0.0.1",
   "description": "Weatherapp exercise frontend",
+  "main": "src/index.jsx",
   "repository": {
     "type": "git",
     "url": "https://github.com/mrako/weatherapp.git"
