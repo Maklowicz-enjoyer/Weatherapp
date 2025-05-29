@@ -13,5 +13,5 @@ ENV PORT=9000
 
 EXPOSE 9000
 
-CMD ["node", "start"]
+CMD ["npm", "start"]
 
