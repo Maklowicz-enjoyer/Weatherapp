@@ -1,0 +1,45 @@
+
+
+services:
+  backend:
+    build: ./backend
+    container_name: weatherapp_backend
+    ports:
+      - "9000:9000"
+    volumes:
+      # Mount source code for hot reload during development
+      - ./backend/src:/app/src
+      - ./backend/package.json:/app/package.json
+      - ./backend/package-lock.json:/app/package-lock.json
+      # Exclude node_modules to avoid conflicts
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ./backend/.env  # Load environment variables from .env file
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: weatherapp_frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount source code for hot reload during development
+      - ./frontend/src:/app/src
+      - ./frontend/package.json:/app/package.json
+      - ./frontend/package-lock.json:/app/package-lock.json
+      - ./frontend/webpack.config.js:/app/webpack.config.js
+      # Exclude node_modules to avoid conflicts
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      # Point to backend service
+      - REACT_APP_BACKEND_URL=http://backend:9000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+networks:
+  default:
+    name: weatherapp_network
