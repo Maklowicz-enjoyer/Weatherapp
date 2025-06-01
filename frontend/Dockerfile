@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY ./src ./src/
+COPY . .
 COPY webpack.config.js ./
 
 EXPOSE 8000

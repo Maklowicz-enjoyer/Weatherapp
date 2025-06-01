@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install 
 
 #copy source code
-COPY src/ ./src/
+COPY src ./src
 
 ENV PORT=9000
 

@@ -1,0 +1,34 @@
+services:
+  backend:
+    build: ./backend
+    container_name: weatherapp_backend
+    ports:
+      - "9000:9000"
+    volumes:
+      # Mount the entire backend directory for development
+      - ./backend:/app
+      # Exclude node_modules to avoid conflicts
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ./backend/.env  # Load environment variables from .env file
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: weatherapp_frontend
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+      # Point to backend service
+      - VITE_ENDPOINT=http://backend:9000
+      - NODE_OPTIONS=--openssl-legacy-provider
+    #depends_on:
+     # - backend
+    restart: unless-stopped
+
+networks:
+  default:
+    name: weatherapp_network

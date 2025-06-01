@@ -1,0 +1,24 @@
+GET /img/01.svg HTTP/1.1
+Host: localhost:8000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:137.0) Gecko/20100101 Firefox/137.0
+Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br, zstd
+Connection: keep-alive
+Referer: http://localhost:8000/
+Cookie: i18n_redirected=en-US
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+If-Modified-Since: Fri, 30 May 2025 11:57:51 GMT
+If-None-Match: W/"524-197210e3e18"
+Priority: u=5
+HTTP/1.1 304 Not Modified
+X-Powered-By: Express
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Fri, 30 May 2025 11:57:51 GMT
+ETag: W/"524-197210e3e18"
+Date: Fri, 30 May 2025 15:21:02 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5

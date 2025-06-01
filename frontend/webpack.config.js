@@ -28,6 +28,12 @@ module.exports = {
     disableHostCheck: true,
     host: process.env.HOST || '0.0.0.0',
     port: process.env.PORT || 8000,
+    proxy: {
+      '/api': {
+	      target: 'http://backend:9000',
+	      changeOrigin: true,
+      },
+    },
   },
   output: {
     filename: '[name].[hash:8].js',
