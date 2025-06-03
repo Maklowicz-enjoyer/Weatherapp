@@ -1,34 +1,51 @@
 services:
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: weatherapp_backend
     ports:
       - "9000:9000"
-    volumes:
-      # Mount the entire backend directory for development
-      - ./backend:/app
-      # Exclude node_modules to avoid conflicts
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
     env_file:
-      - ./backend/.env  # Load environment variables from .env file
+      - ./backend/.env
+    environment:
+      - PORT=9000
+      - MAP_ENDPOINT=http://api.openweathermap.org/data/2.5
+      - TARGET_CITY=Madrid,es
+    volumes:
+      # Mount source code for hot reload in development
+      - ./backend/src:/app/src
+      - ./backend/package.json:/app/package.json
+      # Exclude node_modules from host
+      - /app/node_modules
+    networks:
+      - weatherapp-network
     restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: weatherapp_frontend
     ports:
       - "8000:8000"
     environment:
-      - NODE_ENV=development
-      # Point to backend service
-      - VITE_ENDPOINT=http://backend:9000
-      - NODE_OPTIONS=--openssl-legacy-provider
-    #depends_on:
-     # - backend
+      - PORT=8000
+      - HOST=0.0.0.0
+      - ENDPOINT=http://backend:9000
+    volumes:
+      # Mount source code for hot reload in development
+      - ./frontend/src:/app/src
+      - ./frontend/package.json:/app/package.json
+      - ./frontend/webpack.config.js:/app/webpack.config.js
+      # Exclude node_modules from host
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - weatherapp-network
     restart: unless-stopped
 
 networks:
-  default:
-    name: weatherapp_network
+   weatherapp-network:
+     driver: bridge

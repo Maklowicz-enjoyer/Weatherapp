@@ -1,3 +1,4 @@
+
 services:
   backend:
     build: 
@@ -11,12 +12,10 @@ services:
     environment:
       - PORT=9000
       - MAP_ENDPOINT=http://api.openweathermap.org/data/2.5
-      - TARGET_CITY=Warsaw,pl
+      - TARGET_CITY=Madrid,es
     volumes:
-      # Mount source code for hot reload in development
       - ./backend/src:/app/src
       - ./backend/package.json:/app/package.json
-      # Exclude node_modules from host
       - /app/node_modules
     networks:
       - weatherapp-network
@@ -34,11 +33,9 @@ services:
       - HOST=0.0.0.0
       - ENDPOINT=http://backend:9000
     volumes:
-      # Mount source code for hot reload in development
       - ./frontend/src:/app/src
       - ./frontend/package.json:/app/package.json
       - ./frontend/webpack.config.js:/app/webpack.config.js
-      # Exclude node_modules from host
       - /app/node_modules
     depends_on:
       - backend
@@ -46,6 +43,21 @@ services:
       - weatherapp-network
     restart: unless-stopped
 
+  nginx:
+    image: nginx:latest
+    container_name: weatherapp_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:rw
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - weatherapp-network
+    restart: unless-stopped
+    
 networks:
-   weatherapp-network:
-     driver: bridge
+  weatherapp-network:
+    driver: bridge
+
